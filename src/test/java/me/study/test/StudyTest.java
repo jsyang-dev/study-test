@@ -8,6 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.time.Duration;
 
@@ -18,13 +21,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
     @Test
     @DisplayName("스터디 만들기")
+    @EnabledOnOs(OS.MAC)
     void create_new_study() {
+        String test_env = System.getenv("TEST_ENV");
+        System.out.println(test_env);
+        assumeTrue("LOCAL".equalsIgnoreCase(test_env));
+
         Study study = new Study(10);
         assertAll(
                 () -> assertNotNull(study),
@@ -40,11 +50,15 @@ class StudyTest {
             new Study(10);
         });
 
-        assertThat(study.getLimit()).isGreaterThan(0);
+        assumingThat("LOCAL".equalsIgnoreCase(test_env), () -> {
+            Study studyLocal = new Study(100);
+            assertThat(studyLocal.getLimit()).isGreaterThan(0);
+        });
     }
 
     @Test
     @DisplayName("스터디 다시 만들기")
+    @DisabledOnOs(OS.MAC)
     void create_new_study_again() {
         System.out.println("create1");
     }
