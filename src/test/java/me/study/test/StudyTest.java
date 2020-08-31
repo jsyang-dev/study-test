@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -25,9 +23,8 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
-    @Test
+    @FastTest
     @DisplayName("스터디 만들기 fast")
-    @Tag("fast")
     void create_new_study() {
         String test_env = System.getenv("TEST_ENV");
         System.out.println(test_env);
@@ -54,9 +51,8 @@ class StudyTest {
         });
     }
 
-    @Test
+    @SlowTest
     @DisplayName("스터디 만들기 slow")
-    @Tag("slow")
     void create_new_study_again() {
         System.out.println("create1");
     }
