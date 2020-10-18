@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -31,19 +32,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StudyTest {
+
+    int value = 1;
 
     @FastTest
     @DisplayName("스터디 만들기 fast")
     void create_new_study() {
         String test_env = System.getenv("TEST_ENV");
+        System.out.println(this);
         System.out.println(test_env);
-        assumeTrue("LOCAL".equalsIgnoreCase(test_env));
+//        assumeTrue("LOCAL".equalsIgnoreCase(test_env));
 
+        System.out.println(value++);
         Study study = new Study(10);
         assertAll(
                 () -> assertNotNull(study),
@@ -68,7 +73,9 @@ class StudyTest {
     @SlowTest
     @DisplayName("스터디 만들기 slow")
     void create_new_study_again() {
-        System.out.println("create1");
+
+        System.out.println(this);
+        System.out.println("create1" + value++);
     }
 
     @DisplayName("스터디 만들기")
