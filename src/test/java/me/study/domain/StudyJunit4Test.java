@@ -1,4 +1,4 @@
-package me.study.test;
+package me.study.domain;
 
 import org.junit.Before;
 import org.junit.Test;

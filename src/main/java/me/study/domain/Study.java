@@ -1,4 +1,6 @@
-package me.study.test;
+package me.study.domain;
+
+import me.study.study.StudyStatus;
 
 public class Study {
 
