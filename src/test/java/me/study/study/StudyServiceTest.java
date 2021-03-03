@@ -1,6 +1,7 @@
 package me.study.study;
 
 import me.study.domain.Member;
+import me.study.domain.Study;
 import me.study.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,5 +61,25 @@ class StudyServiceTest {
         assertThrows(RuntimeException.class, () -> memberService.findById(2L));
 
         assertEquals(Optional.empty(), memberService.findById(3L));
+    }
+
+    @Test
+    void createNewStudy3() {
+        StudyService studyService = new StudyService(memberService, studyRepository);
+        assertNotNull(studyService);
+
+        Member member = new Member();
+        member.setId(1L);
+        member.setEmail("test@email.com");
+
+        Study study = new Study(10, "테스트");
+
+        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+        when(studyRepository.save(study)).thenReturn(study);
+
+        studyService.createNewStudy(1L, study);
+
+        assertNotNull(study.getOwner());
+        assertEquals(member, study.getOwner());
     }
 }
