@@ -29,14 +29,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumingThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 //@ExtendWith(FindSlowTestExtension.class)
 //@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -64,7 +59,7 @@ class StudyTest {
                 () -> assertNotNull(study),
                 () -> assertEquals(StudyStatus.DRAFT, study.getStatus(),
                         () -> "스터디를 처음 만들면 " + StudyStatus.DRAFT + " 상태다."),
-                () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다.")
+                () -> assertTrue(study.getLimitCount() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다.")
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
@@ -76,7 +71,7 @@ class StudyTest {
 
         assumingThat("LOCAL".equalsIgnoreCase(test_env), () -> {
             Study studyLocal = new Study(100);
-            assertThat(studyLocal.getLimit()).isGreaterThan(0);
+            assertThat(studyLocal.getLimitCount()).isGreaterThan(0);
         });
     }
 
@@ -112,7 +107,7 @@ class StudyTest {
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(ints = {10, 20, 40})
     void parameterizedTest2(@ConvertWith(StudyConverter.class) Study study) {
-        System.out.println(study.getLimit());
+        System.out.println(study.getLimitCount());
     }
 
     static class StudyConverter extends SimpleArgumentConverter {
